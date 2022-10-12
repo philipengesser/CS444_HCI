@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <Title>Arboretum Themes</Title>
+    <!-- TODO -->
+    <!-- Add WSU logo as the websites favicon -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <h1>Themes</h1>
+    <ul id="Themes">
+        <!-- This will be populated from the XML file -->
+    </ul>
+    <!-- This is a test for cards using Bootstrap -->
+    <div class="card">
+        <img class="card-img-top" src="https://w3.winona.edu/Locations/Resources/AustrianPine.png" alt="Card image">
+        <div class="card-header">Header</div>
+        <div class="card-body">Content</div>
+        <div class="card-footer">Footer</div>
+      </div>
+</body>
+
+<script>
+    // docName is the name of the xml document to load
+    // callBackFunction is a function that will run as soon as the xml finishes loading
+    function loadXMLDoc(docName, callBackFunction) {     
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            console.log("readyState : " + this.readyState);
+            console.log("status : " + this.status);
+            if (this.readyState == 4 && this.status == 200) {
+                callBackFunction(this);
+            }
+        };
+        request.open("GET", docName, true);
+        request.send();
+        console.log("Check 1");
+        
+    }
+
+    function processXML(response) {
+        console.log("Check 2");
+        var themes, i, xmlDoc, txt;
+        xmlDoc = response.responseXML; //Response returned as XML data
+        txt = "";
+        var themes = xmlDoc.getElementsByTagName("ThemeData");
+
+        var listForThemes = document.getElementById("Themes");
+        console.log("made it this far");
+        console.log(themes.length);
+        for (i = 0; i < themes.length; i++) {
+            themeNode = document.createElement("div");
+            
+            //<div class="card">
+            themeNode.innerHTML = themes[i].getElementsByTagName("ThemeName")[0].innerHTML;
+            listForThemes.appendChild(themeNode);
+        }
+    }
+
+    function getThemeImageURLs(ThemeId)
+    {
+        //loadXMLDoc()
+    }
+
+    loadXMLDoc("themes.xml", processXML);
+
+</script>
+
+</html>
